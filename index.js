@@ -1,4 +1,3 @@
-// Creates Iframe
 function config(block) {
     const testId = block.getAttribute('data-test');
     if (!testId) {
