@@ -1,0 +1,25 @@
+{
+  "name": "@davidtema/testonomica_widget",
+  "version": "1.0.0",
+  "description": "Integration widget",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidtema/testonomica_widget.git"
+  },
+  "keywords": [
+    "testonomica",
+  ],
+  "author": {
+    "name": "davidtema",
+    "url": "https://testonomica.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/davidtema/testonomica_widget/issues"
+  },
+  "homepage": "https://github.com/davidtema/testonomica_widget#readme"
+}
