@@ -1,7 +1,7 @@
 # testonomica_widget
 
     <div id="testonomica_app" data-test="102"></div>
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.0.1/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.0.2/index.min.js"></script>
 
 For paid tests:
 
@@ -26,7 +26,7 @@ Additional parameters
 Changelog
 ---
 
-### 1.0.1
+### 1.0.2
 
 - Added parameters **data-init**, **data-show-result-after-load**.
 - Added event subscription **finish**.
