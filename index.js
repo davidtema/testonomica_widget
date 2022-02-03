@@ -17,7 +17,7 @@ class TncEventDispatcher {
     }
 }
 
-class tncw {
+class Widget {
     constructor(block, config, dispatcher) {
         this.block = block;
         this.config = config;
@@ -119,7 +119,7 @@ window.onmessage = function (e) {
 }
 
 // tncw is Testonomica Widget
-const tncw = new tncw(block, config, dispatcher);
+const tncw = new Widget(block, config, dispatcher);
 if (config.init === 'auto') {
     tncw.init();
 }
