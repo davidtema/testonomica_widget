@@ -73,10 +73,7 @@ function configure(block) {
     if (!testId) {
         throw new Error('Error no test specified (e.g data-test="102").');
     }
-    const token = block.getAttribute('data-token');
-    if (!token) {
-        throw new Error('Error no token specified (e.g data-token="PUBLIC_TOKEN").');
-    }
+    const token = block.getAttribute('data-token') ?? null;
     // показ результата при загрузке страницы если результат имеется
     const showResultAfterLoad = boolParam(block.getAttribute('data-show-result-after-load'), 1);
     // инициализация iframe
