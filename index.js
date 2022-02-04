@@ -1,5 +1,6 @@
 const EVENT_FINISH = 'finish';
 const EVENT_RESIZE = 'resize';
+const EVENT_LOAD = 'load';
 
 class TncEventDispatcher {
     constructor() {
@@ -31,6 +32,12 @@ class Widget {
             showResultAfterLoad: config.showResultAfterLoad
         }
 
+        // loading screen: copy and display content of block
+        const loadingBlock = document.createElement("div");
+        loadingBlock.innerHTML = block.innerHTML;
+        block.after(loadingBlock);
+        this.block.innerHTML = ''; // clear block
+
         const iframe = document.createElement('iframe');
         iframe.src = config.host + '/tests/widget/' + config.testId + '/?' + (new URLSearchParams(query)).toString();
         iframe.loading = 'lazy';
@@ -38,12 +45,18 @@ class Widget {
         iframe.style.border = 'none';
         iframe.style.height = 'auto';
         iframe.style.width = '100%';
+        iframe.style.display = 'none'; // hide until it's loading
         this.block.appendChild(iframe);
+
+        this.dispatcher.addEventListener(EVENT_LOAD, function (e) {
+            loadingBlock.remove();
+            iframe.style.display = 'block';
+        });
 
         this.dispatcher.addEventListener(EVENT_RESIZE, function (e) {
             const height = parseInt(e.frameHeight);
             iframe.style.height = height + 'px';
-        })
+        });
     }
 
     addEventListener(name, callback) {
@@ -73,7 +86,10 @@ function configure(block) {
     if (!testId) {
         throw new Error('Error no test specified (e.g data-test="102").');
     }
-    const token = block.getAttribute('data-token') ?? null;
+    const token = block.getAttribute('data-token');
+    if (!token) {
+        throw new Error('Error no token specified (e.g data-token="PUBLIC_TOKEN").');
+    }
     // показ результата при загрузке страницы если результат имеется
     const showResultAfterLoad = boolParam(block.getAttribute('data-show-result-after-load'), 1);
     // инициализация iframe
@@ -111,6 +127,9 @@ window.onmessage = function (e) {
         }
         if (name === EVENT_FINISH) {
             dispatcher.dispatchEvent(new CustomEvent(EVENT_FINISH, {detail: {key: e.data.key}}))
+        }
+        if (name === EVENT_LOAD) {
+            dispatcher.dispatchEvent(new CustomEvent(EVENT_LOAD))
         }
     }
 }

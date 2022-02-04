@@ -17,7 +17,10 @@ Additional parameters
 ## Manual initialize example with event subscription
 
     window.tncw.addEventListener('finish', function (e) {
-        alert(`Your result key: ${e.key}`);
+        alert(`Your result key: ${e.key}.`);
+    });
+    window.tncw.addEventListener('load', function (e) {
+        alert(`Iframe loaded.`);
     });
     window.tncw.init();
 
@@ -26,13 +29,18 @@ Additional parameters
 Changelog
 ---
 
+### 1.0.4
+
+- Keeps the contents of the main div on the screen until the iframe loaded.
+
+### 1.0.3
+
+- Allow load with no token for free tests.
+
 ### 1.0.2
 
 - Added parameters **data-init**, **data-show-result-after-load**.
 - Added event subscription **finish**.
-
-### 1.0.3
-- Allow load with no token for free tests.
 
 ---
 
