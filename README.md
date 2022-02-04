@@ -29,6 +29,11 @@ Additional parameters
 Changelog
 ---
 
+### 1.0.5
+
+- Rename `load` event to `loaded`
+- Bugfix when token was validated like before 1.0.3.
+
 ### 1.0.4
 
 - Keeps the contents of the main div on the screen until the iframe loaded.
@@ -47,6 +52,7 @@ Changelog
 Future
 ---
 
+- scroll up when height sufficiently reduces
 - data-save-result `true`, `false` if you are going to store progress data on your server.
 - data-result-screen `true`, `false` (no sure). Show Message instead e.g. "Calculating...".
 - add to finish event progress data for case when you are going to store data on your server.

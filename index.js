@@ -1,6 +1,6 @@
 const EVENT_FINISH = 'finish';
 const EVENT_RESIZE = 'resize';
-const EVENT_LOAD = 'load';
+const EVENT_LOADED = 'loaded';
 
 class TncEventDispatcher {
     constructor() {
@@ -48,7 +48,7 @@ class Widget {
         iframe.style.display = 'none'; // hide until it's loading
         this.block.appendChild(iframe);
 
-        this.dispatcher.addEventListener(EVENT_LOAD, function (e) {
+        this.dispatcher.addEventListener(EVENT_LOADED, function (e) {
             loadingBlock.remove();
             iframe.style.display = 'block';
         });
@@ -87,9 +87,6 @@ function configure(block) {
         throw new Error('Error no test specified (e.g data-test="102").');
     }
     const token = block.getAttribute('data-token');
-    if (!token) {
-        throw new Error('Error no token specified (e.g data-token="PUBLIC_TOKEN").');
-    }
     // показ результата при загрузке страницы если результат имеется
     const showResultAfterLoad = boolParam(block.getAttribute('data-show-result-after-load'), 1);
     // инициализация iframe
@@ -128,8 +125,8 @@ window.onmessage = function (e) {
         if (name === EVENT_FINISH) {
             dispatcher.dispatchEvent(new CustomEvent(EVENT_FINISH, {detail: {key: e.data.key}}))
         }
-        if (name === EVENT_LOAD) {
-            dispatcher.dispatchEvent(new CustomEvent(EVENT_LOAD))
+        if (name === EVENT_LOADED) {
+            dispatcher.dispatchEvent(new CustomEvent(EVENT_LOADED))
         }
     }
 }
