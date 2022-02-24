@@ -2,6 +2,17 @@ const EVENT_FINISH = 'finish';
 const EVENT_RESIZE = 'resize';
 const EVENT_LOADED = 'loaded';
 
+function randString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 class TncEventDispatcher {
     constructor() {
         this.listeners = {};
@@ -18,6 +29,27 @@ class TncEventDispatcher {
     }
 }
 
+const session = function () {
+    const STORAGE_NAME = 'tnc_sid';
+
+    function init() {
+        if (!get()) {
+            set();
+        }
+        return get();
+    }
+
+    function get() {
+        return localStorage.getItem(STORAGE_NAME);
+    }
+
+    function set() {
+        return localStorage.setItem(STORAGE_NAME, randString(12));
+    }
+
+    return init();
+}
+
 class Widget {
     constructor(block, config, dispatcher) {
         this.block = block;
@@ -29,7 +61,8 @@ class Widget {
         const config = this.config;
         const query = {
             token: config.token,
-            showResultAfterLoad: config.showResultAfterLoad
+            showResultAfterLoad: config.showResultAfterLoad,
+            sid: session()
         }
 
         // loading screen: copy and display content of block
@@ -39,7 +72,8 @@ class Widget {
         this.block.innerHTML = ''; // clear block
 
         const iframe = document.createElement('iframe');
-        iframe.src = config.host + '/tests/widget/' + config.testId + '/?' + (new URLSearchParams(query)).toString();
+        // iframe.src = config.host + '/tests/widget/' + config.testId + '/?' + (new URLSearchParams(query)).toString();
+        iframe.src = `${config.host}/tests/widget/${config.testId}/?${(new URLSearchParams(query)).toString()}`;
         iframe.loading = 'lazy';
         iframe.scrolling = 'no';
         iframe.style.border = 'none';

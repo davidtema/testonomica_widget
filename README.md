@@ -29,6 +29,10 @@ Additional parameters
 Changelog
 ---
 
+### 1.1.0
+
+- Enabled support for disabled third-party cookies.
+
 ### 1.0.5
 
 - Rename `load` event to `loaded`
