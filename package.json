@@ -1,6 +1,6 @@
 {
   "name": "@davidtema/testonomica_widget",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Integration widget",
   "main": "index.js",
   "scripts": {

@@ -29,6 +29,10 @@ Additional parameters
 Changelog
 ---
 
+### 1.1.1
+
+- Added browser locale detection. Non-russian locale is host/{LANG}/...
+
 ### 1.1.0
 
 - Enabled support for disabled third-party cookies.

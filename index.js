@@ -2,6 +2,15 @@ const EVENT_FINISH = 'finish';
 const EVENT_RESIZE = 'resize';
 const EVENT_LOADED = 'loaded';
 
+const langDetect = function () {
+    const browserLocales = navigator.languages === undefined ? [navigator.language] : navigator.languages;
+    if (!browserLocales) {
+        return 'ru';
+    }
+    const defaultLocale = browserLocales[0];
+    return defaultLocale.split(/[-_]/)[0];
+}
+
 function randString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -73,7 +82,8 @@ class Widget {
 
         const iframe = document.createElement('iframe');
         // iframe.src = config.host + '/tests/widget/' + config.testId + '/?' + (new URLSearchParams(query)).toString();
-        iframe.src = `${config.host}/tests/widget/${config.testId}/?${(new URLSearchParams(query)).toString()}`;
+        const lang = config.lang !== 'ru' ? `/${config.lang}` : '';
+        iframe.src = `${config.host}${lang}/tests/widget/${config.testId}/?${(new URLSearchParams(query)).toString()}`;
         iframe.loading = 'lazy';
         iframe.scrolling = 'no';
         iframe.style.border = 'none';
@@ -130,6 +140,7 @@ function configure(block) {
     }
     return {
         host: block.getAttribute('data-host') ?? 'https://testonomica.com',
+        lang: langDetect(),
         testId,
         token,
         showResultAfterLoad,
