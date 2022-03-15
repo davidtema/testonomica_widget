@@ -30,7 +30,7 @@ Additional parameters
 Changelog
 ---
 
-### 1.1.2
+### 1.1.3
 
 - Added report display managing via attr `data-display-report`.
 
