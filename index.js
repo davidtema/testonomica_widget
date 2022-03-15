@@ -70,6 +70,7 @@ class Widget {
         const config = this.config;
         const query = {
             token: config.token,
+            displayReport: config.displayReport,
             showResultAfterLoad: config.showResultAfterLoad,
             sid: session()
         }
@@ -133,6 +134,7 @@ function configure(block) {
     const token = block.getAttribute('data-token');
     // показ результата при загрузке страницы если результат имеется
     const showResultAfterLoad = boolParam(block.getAttribute('data-show-result-after-load'), 1);
+    const displayReport = boolParam(block.getAttribute('data-display-report'), 1);
     // инициализация iframe
     const init = stingParam(block.getAttribute('data-init'), 'auto', ['auto']);
     if (['auto', 'manual'].indexOf(init) === -1) {
@@ -143,6 +145,7 @@ function configure(block) {
         lang: langDetect(),
         testId,
         token,
+        displayReport,
         showResultAfterLoad,
         init
     }

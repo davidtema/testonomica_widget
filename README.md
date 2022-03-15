@@ -1,7 +1,7 @@
 # testonomica_widget
 
     <div id="testonomica_app" data-test="102"></div>
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.0.2/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.1.2/index.min.js"></script>
 
 For paid tests:
 
@@ -12,6 +12,7 @@ Additional parameters
 
 - **data-init**. Default value: `manual`. Possible values: `manual`, `auto`. For case, when you need some preparation
   use *manual*.
+- **data-display-report**. Default value: `true`. Possible values: `true`, `false`.
 - **data-show-result-after-load**. Default value: `true`. Possible values: `true`, `false`.
 
 ## Manual initialize example with event subscription
@@ -28,6 +29,10 @@ Additional parameters
 
 Changelog
 ---
+
+### 1.1.2
+
+- Added report display managing via attr `data-display-report`.
 
 ### 1.1.1
 
@@ -62,7 +67,6 @@ Future
 
 - scroll up when height sufficiently reduces
 - data-save-result `true`, `false` if you are going to store progress data on your server.
-- data-result-screen `true`, `false` (no sure). Show Message instead e.g. "Calculating...".
 - add to finish event progress data for case when you are going to store data on your server.
 - `window.tncw.status().then(status => { if (status === 'progress') alert('Status: in progress.'); })`
 - start / restart test
