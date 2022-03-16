@@ -14,6 +14,7 @@ Additional parameters
   use *manual*.
 - **data-display-report**. Default value: `true`. Possible values: `true`, `false`.
 - **data-show-result-after-load**. Default value: `true`. Possible values: `true`, `false`.
+- **data-lang**. Default value: `manual`. Possible values: `auto`, `ru`, `en`.
 
 ## Manual initialize example with event subscription
 
@@ -29,6 +30,10 @@ Additional parameters
 
 Changelog
 ---
+
+### 1.1.4
+
+- Added managing language via attr `data-lang`.
 
 ### 1.1.3
 

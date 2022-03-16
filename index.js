@@ -140,9 +140,13 @@ function configure(block) {
     if (['auto', 'manual'].indexOf(init) === -1) {
         throw new Error('Unsupported value init: ' + init);
     }
+    let lang = stingParam(block.getAttribute('data-lang'), 'auto', ['ru', 'en']);
+    if (lang === 'auto') {
+        lang = langDetect();
+    }
     return {
         host: block.getAttribute('data-host') ?? 'https://testonomica.com',
-        lang: langDetect(),
+        lang,
         testId,
         token,
         displayReport,
