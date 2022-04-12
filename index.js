@@ -1,3 +1,5 @@
+// definitions
+
 const EVENT_FINISH = 'finish';
 const EVENT_RESIZE = 'resize';
 const EVENT_LOADED = 'loaded';
@@ -11,7 +13,7 @@ const langDetect = function () {
     return defaultLocale.split(/[-_]/)[0];
 }
 
-function randString(length) {
+const randString = function (length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
 
@@ -20,93 +22,6 @@ function randString(length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
-
-class TncEventDispatcher {
-    constructor() {
-        this.listeners = {};
-    }
-
-    addEventListener(name, callback) {
-        this.listeners[name] = callback
-    }
-
-    dispatchEvent(e) {
-        if (this.listeners[e.type]) {
-            this.listeners[e.type](e.detail);
-        }
-    }
-}
-
-const session = function () {
-    const STORAGE_NAME = 'tnc_sid';
-
-    function init() {
-        if (!get()) {
-            set();
-        }
-        return get();
-    }
-
-    function get() {
-        return localStorage.getItem(STORAGE_NAME);
-    }
-
-    function set() {
-        return localStorage.setItem(STORAGE_NAME, randString(12));
-    }
-
-    return init();
-}
-
-class Widget {
-    constructor(block, config, dispatcher) {
-        this.block = block;
-        this.config = config;
-        this.dispatcher = dispatcher;
-    }
-
-    init() {
-        const config = this.config;
-        const query = {
-            token: config.token,
-            displayReport: config.displayReport,
-            showResultAfterLoad: config.showResultAfterLoad,
-            sid: session()
-        }
-
-        // loading screen: copy and display content of block
-        const loadingBlock = document.createElement("div");
-        loadingBlock.innerHTML = block.innerHTML;
-        block.after(loadingBlock);
-        this.block.innerHTML = ''; // clear block
-
-        const iframe = document.createElement('iframe');
-        // iframe.src = config.host + '/tests/widget/' + config.testId + '/?' + (new URLSearchParams(query)).toString();
-        const lang = config.lang !== 'ru' ? `/${config.lang}` : '';
-        iframe.src = `${config.host}${lang}/tests/widget/${config.testId}/?${(new URLSearchParams(query)).toString()}`;
-        iframe.loading = 'lazy';
-        iframe.scrolling = 'no';
-        iframe.style.border = 'none';
-        iframe.style.height = 'auto';
-        iframe.style.width = '100%';
-        iframe.style.display = 'none'; // hide until it's loading
-        this.block.appendChild(iframe);
-
-        this.dispatcher.addEventListener(EVENT_LOADED, function (e) {
-            loadingBlock.remove();
-            iframe.style.display = 'block';
-        });
-
-        this.dispatcher.addEventListener(EVENT_RESIZE, function (e) {
-            const height = parseInt(e.frameHeight);
-            iframe.style.height = height + 'px';
-        });
-    }
-
-    addEventListener(name, callback) {
-        this.dispatcher.addEventListener(name, callback);
-    }
 }
 
 function boolParam(value, defaultValue) {
@@ -155,33 +70,144 @@ function configure(block) {
     }
 }
 
+class TncEventDispatcher {
+    constructor() {
+        this.listeners = {};
+    }
+
+    addEventListener(name, callback) {
+        if (!this.listeners.hasOwnProperty(name)) {
+            this.listeners[name] = [];
+        }
+        this.listeners[name].push(callback);
+    }
+
+    dispatchEvent(e) {
+        if (this.listeners[e.type]) {
+            for (let i in this.listeners[e.type]) {
+                this.listeners[e.type][i](e.detail);
+            }
+        }
+    }
+}
+
+const session = function () {
+    const STORAGE_NAME = 'tnc_sid';
+
+    function init() {
+        if (!get()) {
+            set();
+        }
+        return get();
+    }
+
+    function get() {
+        return localStorage.getItem(STORAGE_NAME);
+    }
+
+    function set() {
+        return localStorage.setItem(STORAGE_NAME, randString(12));
+    }
+
+    return init();
+}
+
+class Widget {
+    constructor(block, config, dispatcher) {
+        this._block = block;
+        this.config = config;
+        this.dispatcher = dispatcher;
+    }
+
+    init() {
+        log('init widget');
+        const config = this.config;
+        const query = {
+            token: config.token,
+            displayReport: config.displayReport,
+            showResultAfterLoad: config.showResultAfterLoad,
+            sid: session()
+        }
+
+        // loading screen: copy and display content of block
+        const loadingBlock = document.createElement("div");
+        loadingBlock.innerHTML = this._block.innerHTML;
+        this._block.after(loadingBlock);
+        this._block.innerHTML = ''; // clear block
+
+        const lang = config.lang !== 'ru' ? `/${config.lang}` : '';
+        log('lang: ' + lang);
+        const url = `${config.host}${lang}/tests/w/${config.testId}/?${(new URLSearchParams(query)).toString()}`;
+        // const url = `http://127.0.0.1:8000/tests/iframe/`;
+        // const url = `http://tn/tests/iframe/`;
+        log('Iframe url: ' + url);
+
+        // console.log('create iframe...')
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        // iframe.loading = 'lazy'; // this kills loading for unknown reason
+        iframe.scrolling = 'no';
+        iframe.style.border = 'none';
+        iframe.style.height = 'auto';
+        iframe.style.width = '100%';
+        iframe.style.display = 'none'; // hide until it's loading
+        this._block.appendChild(iframe);
+
+        // console.log(this._block)
+        log('Iframe added: ' + (this._block.getElementsByTagName('iframe').length === 1 ? 'yes' : 'no'));
+
+        this.dispatcher.addEventListener(EVENT_LOADED, function (e) {
+            log('Iframe event handle: ' + EVENT_LOADED);
+            loadingBlock.remove();
+            iframe.style.display = 'block';
+        });
+
+        this.dispatcher.addEventListener(EVENT_RESIZE, function (e) {
+            log('Iframe event handle: ' + EVENT_RESIZE);
+            const height = parseInt(e.frameHeight);
+            iframe.style.height = height + 'px';
+        });
+    }
+
+    addEventListener(name, callback) {
+        this.dispatcher.addEventListener(name, callback);
+    }
+}
+
+// instances
+
+const dispatcher = new TncEventDispatcher();
+
+const log = function (...msg) {
+    dispatcher.dispatchEvent(new CustomEvent('log', {detail: {msg}}));
+    // console.log(msg);
+}
+
 const block = document.getElementById('testonomica_app');
 if (!block) {
+    log('No tag found.');
     throw new Error('Error tag id "testonomica_app" not found.');
 }
 const config = configure(block);
 
-const dispatcher = new TncEventDispatcher();
-
-window.onmessage = function (e) {
+window.addEventListener('message', function (e) {
+    log('Window.onmessage from ' + e.origin);
     if (e.origin !== config.host) {
         return;
     }
     if (e.data.hasOwnProperty("name")) {
+        log(e.data.name);
         const name = e.data.name;
         // frameHeight
         if (name === 'frameHeight') {
             dispatcher.dispatchEvent(new CustomEvent(EVENT_RESIZE, {detail: {frameHeight: e.data.frameHeight}}))
-            return;
-        }
-        if (name === EVENT_FINISH) {
+        } else if (name === EVENT_FINISH) {
             dispatcher.dispatchEvent(new CustomEvent(EVENT_FINISH, {detail: {key: e.data.key}}))
-        }
-        if (name === EVENT_LOADED) {
+        } else if (name === EVENT_LOADED) {
             dispatcher.dispatchEvent(new CustomEvent(EVENT_LOADED))
         }
     }
-}
+});
 
 // tncw is Testonomica Widget
 const tncw = new Widget(block, config, dispatcher);

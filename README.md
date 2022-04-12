@@ -31,6 +31,11 @@ Additional parameters
 Changelog
 ---
 
+### 1.1.5
+
+- Fixed empty screen in Chrome 99+ (removed iframe.loading = 'lazy')
+- Added logging
+
 ### 1.1.4
 
 - Added managing language via attr `data-lang`.
