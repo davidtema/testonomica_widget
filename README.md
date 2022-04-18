@@ -1,7 +1,11 @@
 # testonomica_widget
 
     <div id="testonomica_app" data-test="102"></div>
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.1.2/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/index.min.js"></script>
+    
+Specific version:
+
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.1.5/index.min.js"></script>
 
 For paid tests:
 
