@@ -9,7 +9,7 @@ Specific version:
 
 For paid tests:
 
-    <div id="testonomica_app" data-test="102" data-token={YOUR_PRIVATE_TOKEN}></div>
+    <div id="testonomica_app" data-test="102" data-token="{PUBLIC_TOKEN}"></div>
 
 Additional parameters
 ---
