@@ -1,13 +1,15 @@
 # testonomica_widget
 
+    <link href="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/build/main.css" rel="stylesheet">
     <div id="testonomica_app" data-test="102"></div>
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/index.min.js"></script>
-    
-Specific version:
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/build/bundle.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@1.1.5/index.min.js"></script>
+A specific version:
 
-For paid tests:
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@2.0.2/build/bundle.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@2.0.2/build/main.css" rel="stylesheet">
+
+For paid tests you must specify public token just like that:
 
     <div id="testonomica_app" data-test="102" data-token="{PUBLIC_TOKEN}"></div>
 
@@ -22,21 +24,37 @@ Additional parameters
 
 ## Manual initialize example with event subscription
 
-    window.tncw.addEventListener('finish', function (e) {
-        alert(`Your result key: ${e.key}.`);
-    });
-    window.tncw.addEventListener('load', function (e) {
-        alert(`Iframe loaded.`);
-    });
-    window.tncw.init();
+If you need to postpone initialization or subscribe to app events, you must explicitly set `data-init="manual"`
+in the container tag and then refer to the object `window.tncw`, which goes with two methods: `addEventListener`
+and `init`.
+
+    <div id="testonomica_app" data-test="102" data-init="manual"></div>
+
+    <script>
+        window.tncw.addEventListener('finish', function (e) {
+            alert(`Your result key: ${e.key}.`);
+        });
+        window.tncw.addEventListener('load', function (e) {
+            alert(`Iframe loaded.`);
+        });
+        window.tncw.init();
+    </script>
 
 ---
+
+## Events
+
+- `loaded`
+- `finish`
+- `log`
 
 Changelog
 ---
 
 ### 2.0.0
-- Rejection of Iframe
+
+- Rejection of Iframe.
+- Style mode: "Office". E.g. `<div id="testonomica_app" class="tnc-office"...>`.
 
 ### 1.1.5
 
@@ -82,9 +100,6 @@ Changelog
 Future
 ---
 
-- scroll up when height sufficiently reduces
-- data-save-result `true`, `false` if you are going to store progress data on your server.
-- add to finish event progress data for case when you are going to store data on your server.
-- `window.tncw.status().then(status => { if (status === 'progress') alert('Status: in progress.'); })`
-- start / restart test
+- **data-start-screen**. Default value: `api`. Possible values: `api`, `none`, `live` and `default`, which is `api`.
+- scroll up when height reduces sufficiently.
 
