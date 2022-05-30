@@ -2,8 +2,6 @@ import {parseConfigFromTag, Testonomica} from "testonomica_api/src/index";
 import ProgressStorage from "testonomica_api/src/service/storage/ProgressStorage";
 import 'testonomica_api/src/style.scss';
 
-const tnc = new Testonomica();
-
 window.tnc = function (id, tag) {
     const config = parseConfigFromTag(tag);
 
