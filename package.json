@@ -1,10 +1,12 @@
 {
   "name": "@davidtema/testonomica_widget",
-  "version": "1.1.5",
-  "description": "Integration widget",
+  "version": "2.0.0",
+  "description": "Testonomica build",
   "main": "index.js",
   "scripts": {
-    "build": "terser --compress --mangle -- index.js > index.min.js"
+    "serve": "webpack server --mode development",
+    "watch": "webpack --watch --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,28 @@
   "bugs": {
     "url": "https://github.com/davidtema/testonomica_widget/issues"
   },
-  "homepage": "https://github.com/davidtema/testonomica_widget#readme"
+  "homepage": "https://github.com/davidtema/testonomica_widget#readme",
+  "dependencies": {
+    "postcss-loader": "3",
+    "raw-loader": "3",
+    "testonomica_api": "^1.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "babel-loader": "^8.2.5",
+    "css-loader": "^6.2.0",
+    "file-loader": "^6.2.0",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
+    "mini-css-extract-plugin": "^2.2.0",
+    "sass": "^1.38.0",
+    "sass-loader": "^12.1.0",
+    "style-loader": "1",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.9.0"
+  }
 }

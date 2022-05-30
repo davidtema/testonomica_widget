@@ -31,6 +31,9 @@ Additional parameters
 Changelog
 ---
 
+### 2.0.0
+- Rejection of Iframe
+
 ### 1.1.5
 
 - Fixed empty screen in Chrome 99+ (removed iframe.loading = 'lazy')
