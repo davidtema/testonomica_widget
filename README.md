@@ -21,6 +21,23 @@ Additional parameters
 - **data-display-report**. Default value: `true`. Possible values: `true`, `false`.
 - **data-show-result-after-load**. Default value: `true`. Possible values: `true`, `false`.
 - **data-lang**. Default value: `manual`. Possible values: `auto`, `ru`, `en`.
+- **data-start-screen**. Default value: `api`. Possible values: `api`, `none`.
+
+## Start screen customization
+
+There is a way how to customize start screen:
+
+- set `data-start-screen="live"`
+- add buttons in the container `<div id="testonomica_buttons"></div>`
+
+Example:
+
+    <div id="testonomica_app" data-test="102" data-start-screen="live">
+        <div class="my_style">
+            <h1 class="my_style__title">Logical test</h1>
+            <div id="testonomica_buttons"></div>
+        </div>
+    </div>
 
 ## Manual initialize example with event subscription
 
@@ -50,6 +67,10 @@ and `init`.
 
 Changelog
 ---
+
+### 2.0.4
+
+- add `data-start-screen`. Default value: `api`. Possible values: `api`, `live`.
 
 ### 2.0.0
 
@@ -100,6 +121,5 @@ Changelog
 Future
 ---
 
-- **data-start-screen**. Default value: `api`. Possible values: `api`, `none`, `live` and `default`, which is `api`.
 - scroll up when height reduces sufficiently.
 

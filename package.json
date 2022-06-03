@@ -1,6 +1,6 @@
 {
   "name": "@davidtema/testonomica_widget",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Testonomica build",
   "main": "index.js",
   "scripts": {
