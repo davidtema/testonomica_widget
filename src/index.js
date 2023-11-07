@@ -1,38 +1,68 @@
-import {parseConfigFromTag, Testonomica} from "testonomica_api/src/index";
+import {Testonomica} from "testonomica_api/src/index";
 import ProgressStorage from "testonomica_api/src/service/storage/ProgressStorage";
-import {EVENT_FINISH} from "../../testonomica_api/src/events";
-import {INIT_AUTO} from "../../testonomica_api/src/const";
 import 'testonomica_api/src/style.scss';
+import {HOST} from "testonomica_api/src/const";
 
-const tag = document.getElementById('testonomica_app');
+// todo убрать все зависимости, сделать инициализацию приложения в testonomica_api. 
+// Использовать как результат компиляции testonomica_api.
+// То есть tncw должно быть в testonomica_api.
 
-const config = parseConfigFromTag(tag);
-const storage = new ProgressStorage(config.getTestId());
+const tncw = { 
+    init: function (config) {
+        // todo validate config
+        if (!config.containerId) {
+            throw new Error('"containderId" is not specified.');
+        }
 
-const runner = new Testonomica(storage, config.getTestId(), config.getHost(), config.getToken());
-runner.addEventListener(EVENT_FINISH, function (e) {
-    console.log(e.key)
-});
+        if (!config.test) {
+            throw new Error('"test" is not specified.');
+        }
 
-const tncw = {
-    addEventListener: function (name, callback) {
-        runner.addEventListener(name, callback);
-    },
-    init: function () {
-        runner.createApp(tag, config);
+        if (!config.handlers) {
+            throw new Error('"handlers" is not specified.');
+        }
+
+        if (!config.handlers.finish) {
+            throw new Error('"handlers.finish" is not specified.');
+        }
+
+        if (!config.host) {
+            config.host = HOST;
+        }
+
+        if (!config.startScreen) {
+            config.startScreen = 'auto';
+        }
+
+        const container = document.getElementById(config.containerId);
+        const storage = new ProgressStorage(config.test);
+        const runner = new Testonomica(storage, config.test, config.host, 'public-token-is-not-used-anymore');
+        
+        // prevent default handlers
+        if (config.prevent) {
+            config.prevent.forEach(function(name) {
+                runner.clearEventListeners(name);
+            })
+        }
+
+        const handlers = Object.entries(config.handlers);
+        for (const [name, callback] of handlers) {
+            runner.addEventListener(name, callback);
+        }
+
+        runner.createApp(container, config);
     }
-}
-
-if (config.getInit() === INIT_AUTO) {
-    runner.createApp(tag, config);
 }
 
 window.tncw = tncw;
 
-// window.tncw.addEventListener('finish', function(e) {
-//      alert(`Your result key is ${e.key}.`);
+// window.tncw.init({
+//  containerId: 'my-app',
+//  test: 'proforientation-v2',
+//  preventDefault: ['finish'],
+//  handlers: {
+//      finish: function(key) {
+//          // save key and go to result page
+//      }
+//  }
 // });
-// window.tncw.addEventListener('log', function (e) {
-//     console.log(...e.msg);
-// });
-// window.tncw.init();

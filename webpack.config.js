@@ -15,14 +15,27 @@ module.exports = {
     //         path.resolve(__dirname, "node_modules"),
     //     ],
     // },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.tsx?$/,
+                use: 'ts-loader',
                 exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-env', '@babel/react']
+            },
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            "@babel/preset-env",
+                            '@babel/preset-react'
+                        ]
+                    },
                 }
             },
             {
