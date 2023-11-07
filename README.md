@@ -1,60 +1,33 @@
 # testonomica_widget
 
     <link href="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/build/main.css" rel="stylesheet">
-    <div id="testonomica_app" data-test="102"></div>
     <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget/build/bundle.js"></script>
+    <div id="testonomica_app"></div>
 
 A specific version:
 
-    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@2.0.2/build/bundle.js"></script>
-    <link href="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@2.0.2/build/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@3.0.0/build/bundle.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/davidtema/testonomica_widget@3.0.0/build/main.css" rel="stylesheet">
+    <div id="testonomica_app"></div>
 
-For paid tests you must specify public token just like that:
-
-    <div id="testonomica_app" data-test="102" data-token="{PUBLIC_TOKEN}"></div>
-
-Additional parameters
 ---
 
-- **data-init**. Default value: `manual`. Possible values: `manual`, `auto`. For case, when you need some preparation
-  use *manual*.
-- **data-display-report**. Default value: `true`. Possible values: `true`, `false`.
-- **data-show-result-after-load**. Default value: `true`. Possible values: `true`, `false`.
-- **data-lang**. Default value: `manual`. Possible values: `auto`, `ru`, `en`.
-- **data-start-screen**. Default value: `api`. Possible values: `api`, `none`.
-
-## Start screen customization
-
-There is a way how to customize start screen:
-
-- set `data-start-screen="live"`
-- add buttons in the container `<div id="testonomica_buttons"></div>`
-
-Example:
-
-    <div id="testonomica_app" data-test="102" data-start-screen="live">
-        <div class="my_style">
-            <h1 class="my_style__title">Logical test</h1>
-            <div id="testonomica_buttons"></div>
-        </div>
-    </div>
-
-## Manual initialize example with event subscription
-
-If you need to postpone initialization or subscribe to app events, you must explicitly set `data-init="manual"`
-in the container tag and then refer to the object `window.tncw`, which goes with two methods: `addEventListener`
-and `init`.
-
-    <div id="testonomica_app" data-test="102" data-init="manual"></div>
+## Initialization
 
     <script>
-        window.tncw.addEventListener('finish', function (e) {
-            alert(`Your result key: ${e.key}.`);
-        });
-        window.tncw.addEventListener('load', function (e) {
-            alert(`Iframe loaded.`);
-        });
-        window.tncw.init();
+        window.tncw.init({
+        containerId: 'testonomica_app',
+        test: 'proftest-v2',
+        handlers: {
+            any_start_click: function () {
+                // hide header and footer
+            },
+            finish: function (e) {
+                // save the key to a session or to db by e.result_key
+                // then you can redirect user to the result screen
+            }
+        }
+    });
     </script>
 
 ---
@@ -67,6 +40,24 @@ and `init`.
 
 Changelog
 ---
+
+### 3.0.0
+
+#### Initialization
+- Only manual initialization left. 
+- Added events: `any_start_click`
+
+#### Custom welcome screen
+- Removed `live` mode because of it inconvenience. 
+- Added autorendering buttons after initialization. The default selector is a class `testonomica_buttons`.
+
+    <div id="my-welcome-screen">
+        <h1>Test</h1>
+        <div class="testonomica_buttons"></div>
+    </div>
+    <div id="testonomica_app" style="display: none"></div>
+
+Subscribe to `any_start_click` event in order to hide the custom welcome screen and enable widget.
 
 ### 2.0.4
 
